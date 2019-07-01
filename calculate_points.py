@@ -24,7 +24,8 @@ off_query = "SELECT  gsis_id, player_id, \
 	passing_int, fumbles_lost \
 FROM play_player \
 WHERE player_id IN (SELECT player_id FROM player \
-                    WHERE player.position IN ('QB','RB','FB','WR','TE'));"
+                    WHERE player.position IN ('QB','RB','FB','WR','TE')) \
+AND gsis_id IN (SELECT gsis_id FROM game WHERE season_year = 2017);"
 
 off_players = pd.read_sql(off_query, conn)
 #off_players.set_index(['gsis_id','player_id'],inplace=True)
@@ -55,12 +56,8 @@ def get_points(playerId,gameId):
     points += 2 * player['receiving_twoptm']
     return(points)
 
-get_points(playerId,gameId)
 
-total_points = []
-for row in game_player.iterrows():
-    total_points.append(get_points(row[0][1], row[0][0]))
 
-game_player['total_points'] = total_points
-player_ppg = game_player['total_points'].reset_index()
+
+
 
