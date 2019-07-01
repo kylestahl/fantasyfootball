@@ -35,6 +35,34 @@ py.plot(fig)
 
 
 
+keep_rows = (player_ppg.position == 'QB') & (player_ppg.season_year == 2017) & (player_ppg.season_type == 'Regular')
+top10_players = player_ppg[keep_rows] \
+    .groupby('full_name') \
+    .agg({'total_points':np.mean}) \
+    .sort_values('total_points',ascending=False) \
+    .head(10).index.values
 
+
+
+data = []
+for player_name in top10_players:
+    line_df = player_ppg[keep_rows & (player_ppg.full_name == player_name)]
+    data.append(
+            go.Scatter(
+                    x = line_df['week'],
+                    y = line_df['total_points'],
+                    name = player_name
+                )
+        )
+# Define graph features
+layout = go.Layout(
+    title='2017 Regular Season Top 10 QBs',
+    yaxis=dict(title='Point per Game'),
+    xaxis=dict(title='Week of Season')
+)
+
+# Build figure
+fig = go.Figure(data=data, layout=layout)
+py.plot(fig)
 
 
