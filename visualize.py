@@ -7,7 +7,7 @@ import plotly.offline as py
 import plotly.graph_objs as go
 
 
-# Filter on 1 player
+# Look at 1 player over time
 player_id = "00-0020531"
 brees = player_ppg[player_ppg.player_id == player_id].sort_values('date_time')
 
@@ -35,6 +35,7 @@ py.plot(fig)
 
 
 
+## Top 10 QB's in 2017
 keep_rows = (player_ppg.position == 'QB') & (player_ppg.season_year == 2017) & (player_ppg.season_type == 'Regular')
 top10_players = player_ppg[keep_rows] \
     .groupby('full_name') \
@@ -64,5 +65,10 @@ layout = go.Layout(
 # Build figure
 fig = go.Figure(data=data, layout=layout)
 py.plot(fig)
+
+
+## QB score density plot
+go.
+
 
 
